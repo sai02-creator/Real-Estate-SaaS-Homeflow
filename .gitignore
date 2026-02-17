@@ -51,3 +51,27 @@ node_modules/
 node_modules/
 .next/
 .env*
+
+# pnpm
+.pnpm-store/
+**/.pnpm-store/
+node_modules/
+
+# next
+.next/
+out/
+
+# env
+.env*
+
+
+# pnpm
+.pnpm-store/
+node_modules/
+
+# next
+.next/
+out/
+
+# env
+.env*
