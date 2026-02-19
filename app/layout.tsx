@@ -1,28 +1,78 @@
-import type { Metadata } from "next";
-import {
-  ClerkProvider,
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from "@clerk/nextjs";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
+import { Geist_Mono, Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { SanityLive } from "@/lib/sanity/live";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Body font - highly readable
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
+// Heading font - modern, friendly geometric
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["500", "600", "700", "800"],
+});
+
+// Mono font for code
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Homeflow",
-  description: "Homeflow app with Clerk authentication",
+  title: {
+    default: "Nestwell | Find Your Perfect Home",
+    template: "%s | Nestwell",
+  },
+  description:
+    "Making your first home journey simple and stress-free. Browse properties, save favorites, and connect with trusted agents.",
+  keywords: [
+    "real estate",
+    "homes for sale",
+    "first-time homebuyer",
+    "property listings",
+    "houses",
+    "apartments",
+  ],
+  authors: [{ name: "Nestwell" }],
+  creator: "Nestwell",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  ),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Nestwell",
+    title: "Nestwell | Find Your Perfect Home",
+    description:
+      "Making your first home journey simple and stress-free. Browse properties, save favorites, and connect with trusted agents.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nestwell | Find Your Perfect Home",
+    description:
+      "Making your first home journey simple and stress-free. Browse properties, save favorites, and connect with trusted agents.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FBF9F6" },
+    { media: "(prefers-color-scheme: dark)", color: "#2D2824" },
+  ],
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -32,39 +82,22 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          {/* Preconnect to external domains for performance */}
+          <link rel="preconnect" href="https://cdn.sanity.io" />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossOrigin="anonymous"
+          />
+        </head>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${inter.variable} ${plusJakarta.variable} ${geistMono.variable} font-body antialiased`}
         >
-          <header className="flex items-center justify-between px-6 py-4 border-b border-zinc-200">
-            <div className="text-sm font-medium text-zinc-800">
-              Homeflow
-            </div>
-            <div className="flex items-center gap-3">
-              <SignedIn>
-                <UserButton />
-              </SignedIn>
-              <SignedOut>
-                <SignInButton mode="modal">
-                  <button
-                    type="button"
-                    className="rounded-full border border-zinc-300 px-4 py-1.5 text-sm font-medium hover:bg-zinc-100"
-                  >
-                    Sign in
-                  </button>
-                </SignInButton>
-                <SignUpButton mode="modal">
-                  <button
-                    type="button"
-                    className="rounded-full bg-black px-4 py-1.5 text-sm font-medium text-white hover:bg-zinc-900"
-                  >
-                    Sign up
-                  </button>
-                </SignUpButton>
-              </SignedOut>
-            </div>
-          </header>
           {children}
+          <SanityLive />
         </body>
       </html>
     </ClerkProvider>
