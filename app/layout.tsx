@@ -1,6 +1,7 @@
-import type { Metadata, Viewport } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
+import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
 import { SanityLive } from "@/lib/sanity/live";
 import "./globals.css";
 
@@ -96,7 +97,12 @@ export default function RootLayout({
         <body
           className={`${inter.variable} ${plusJakarta.variable} ${geistMono.variable} font-body antialiased`}
         >
+          {/* Skip link for accessibility */}
+          <a href="#main" className="skip-link">
+            Skip to main content
+          </a>
           {children}
+          <Toaster />
           <SanityLive />
         </body>
       </html>
